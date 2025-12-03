@@ -24,8 +24,35 @@ def part1() -> int:
   
   return sum(jolts)
 
-def part2():
-  pass
+def get_biggest_number(s: str) -> tuple[int, str]:
+  res = (0, '0')
+
+  for i in range(len(s)):
+    idx, num = res
+    if s[i] > num:
+      num = s[i]
+      idx = i
+    res = (idx, num)
+  
+  return res
+
+def part2() -> int:
+  data = read_input("./input")
+  jolts = []
+
+  for line in data:
+    line_len = len(line)
+    s = []
+    curr_index = 0
+    for i in range(12, 0, -1):
+      check = line[curr_index:line_len-i+1]
+      checked = get_biggest_number(check)
+      curr_index += checked[0] + 1
+      s.append(checked[1])
+
+    jolts.append(''.join(s))
+
+  return sum(map(int, jolts))
 
 if __name__ == "__main__":
   print("Part 1:", part1())
