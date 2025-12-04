@@ -38,7 +38,23 @@ def part1():
   return count
 
 def part2():
-  pass
+  data = read_input("./input")
+  grid = Grid(data)
+  count = 0
+  found = True
+
+  while found:
+    found = False
+    for row in range(len(grid.matrix)):
+      for col in range(len(grid.matrix[0])):
+        if grid.matrix[row][col]:
+          neighbors = grid.number_of_neighbors(row, col)
+          if neighbors < 4:
+            grid.matrix[row][col] = False
+            found = True
+            count += 1
+
+  return count
 
 if __name__ == "__main__":
   print(f"Part 1: {part1()}")
