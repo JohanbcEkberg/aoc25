@@ -6,7 +6,7 @@ def read_input(path) -> tuple[list[tuple[int, int]], list[int]]:
       if "-" in line:
         low, high = line.split("-")
         ranges.append((int(low), int(high)))
-      elif "" is not line:
+      elif "" != line:
         ids.append(int(line))
 
 
@@ -25,7 +25,21 @@ def part1():
   return count
 
 def part2():
-  return 0
+  ranges, _ = read_input("./input")
+  merged_ranges: list[tuple[int, int]] = []
+  for r in sorted(ranges):
+    current_highest = r if len(merged_ranges) == 0 else merged_ranges[-1]
+    if current_highest[1] < r[0] - 1:
+      merged_ranges.append(r)
+    else:
+      new_high_limit = max(current_highest[1], r[1])
+      new_high_range = (current_highest[0], new_high_limit)
+      if len(merged_ranges) == 0:
+        merged_ranges.append(new_high_range)
+      else:
+        merged_ranges[-1] = new_high_range
+  
+  return sum(high - low + 1 for (low, high) in merged_ranges)
 
 if __name__ == "__main__":
   print(f"Part 1: {part1()}")
