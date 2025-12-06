@@ -64,9 +64,6 @@ def part1():
 
   return res
 
-def vertical_number(arr):
-  return arr
-
 def part2():
   data = read_input2("./input")
 
