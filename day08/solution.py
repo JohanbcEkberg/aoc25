@@ -72,8 +72,36 @@ def part1():
   sizes_to_multiply = circuit_sizes[:3]
 
   result = sizes_to_multiply[0] * sizes_to_multiply[1] * sizes_to_multiply[2]
-  
+
   return result
+
+def part2():
+  coords = read_input("./input")
+  N = len(coords)
+
+  all_edges = []
+  for i in range(N):
+    for j in range(i + 1, N):
+      dist_sq = dist(coords[i], coords[j])
+      all_edges.append((dist_sq, i, j, coords[i], coords[j]))
+
+  all_edges.sort(key=lambda x: x[0])
+
+  dsu = DSU(N)
+
+  last_ci = None
+  last_cj = None
+  for dist_sq, i, j, ci, cj in all_edges:
+    dsu.union(i, j)
+    if len(dsu.get_circuit_sizes()) == 1:
+      last_ci = ci
+      last_cj = cj
+      break
+
+  result = last_ci[0] * last_cj[0]
+  return result
+
 
 if __name__ == "__main__":
   print(f"Part 1: {part1()}")
+  print(f"Part 2: {part2()}")
