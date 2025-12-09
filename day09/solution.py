@@ -22,27 +22,7 @@ def part1():
         max = prod
   return max
 
-def point_in_poly(x, y, poly):
-  inside = False
-  n = len(poly)
-
-  for i in range(n):
-    x1, y1 = poly[i]
-    x2, y2 = poly[(i + 1) % n]
-
-    if (min(x1, x2) <= x <= max(x1, x2) and
-      min(y1, y2) <= y <= max(y1, y2)):
-      if (x1 == x2 == x) or (y1 == y2 == y):
-        return True
-
-    if ((y1 > y) != (y2 > y)):
-      xinters = x1 + (y - y1) * (x2 - x1) / (y2 - y1)
-      if xinters >= x:
-        inside = not inside
-
-  return inside
-
-def segment_it_outside(x1, y1, x2, y2, left, right, top, bottom):
+def segment_is_outside(x1, y1, x2, y2, left, right, top, bottom):
   if x1 == x2:
     x_e = x1
     if not (left < x_e < right):
@@ -67,8 +47,6 @@ def part2():
 
   xs = [p[0] for p in data]
   ys = [p[1] for p in data]
-  min_x, max_x = min(xs), max(xs)
-  min_y, max_y = min(ys), max(ys)
 
   best = 0
 
@@ -92,26 +70,16 @@ def part2():
       if area <= best:
         continue
 
-      if left < min_x or right > max_x or top < min_y or bottom > max_y:
-        continue
-
       corners = [
         (left, top),
         (left, bottom),
         (right, top),
         (right, bottom),
       ]
-      ok = True
-      for (cx, cy) in corners:
-        if not point_in_poly(cx, cy, data):
-          ok = False
-          break
-      if not ok:
-        continue
 
       invalid = False
       for (e_x1, e_y1, e_x2, e_y2) in edges:
-        if segment_it_outside(e_x1, e_y1, e_x2, e_y2, left, right, top, bottom):
+        if segment_is_outside(e_x1, e_y1, e_x2, e_y2, left, right, top, bottom):
           invalid = True
           break
       if invalid:
