@@ -45,9 +45,6 @@ def part2():
   data = read_input("./input")
   N = len(data)
 
-  xs = [p[0] for p in data]
-  ys = [p[1] for p in data]
-
   best = 0
 
   edges = []
