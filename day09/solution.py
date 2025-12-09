@@ -70,13 +70,6 @@ def part2():
       if area <= best:
         continue
 
-      corners = [
-        (left, top),
-        (left, bottom),
-        (right, top),
-        (right, bottom),
-      ]
-
       invalid = False
       for (e_x1, e_y1, e_x2, e_y2) in edges:
         if segment_is_outside(e_x1, e_y1, e_x2, e_y2, left, right, top, bottom):
