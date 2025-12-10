@@ -40,7 +40,6 @@ def segment_is_outside(x1, y1, x2, y2, left, right, top, bottom):
   else:
     return False
 
-
 def part2():
   data = read_input("./input")
   N = len(data)
