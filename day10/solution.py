@@ -1,3 +1,5 @@
+import pulp
+
 def read_input(path):
   res = []
   with open(path) as f:
@@ -20,7 +22,6 @@ def read_input(path):
           jolts = list(map(int, joltages))
       res.append((indicator, buttons, jolts))
   return res
-
 
 def solve_row1(indicator, buttons):
   n = len(indicator)
@@ -114,12 +115,35 @@ def part1():
   machines = read_input("./input")
   total = 0
   for (indicator, buttons, _) in machines:
-      total += solve_row1(indicator, buttons)
+    total += solve_row1(indicator, buttons)
   return total
+
+def solve_row2(jolts, buttons):
+  n = len(jolts)
+  m = len(buttons)
+
+  A = [[0]*m for _ in range(n)]
+  for j, b in enumerate(buttons):
+    for i in b:
+      A[i][j] += 1
+
+  prob = pulp.LpProblem('p', pulp.LpMinimize)
+  x = [pulp.LpVariable(f'x{j}', lowBound=0, cat='Integer') for j in range(m)]
+  prob += pulp.lpSum(x)
+
+  for i in range(n):
+    prob += pulp.lpSum(A[i][j]*x[j] for j in range(m)) == jolts[i]
+
+  prob.solve(pulp.PULP_CBC_CMD(msg=0))
+  return int(sum(v.value() for v in x))
 
 
 def part2():
-  pass
+  machines = read_input("./input")
+  total = 0
+  for (_, buttons, jolts) in machines:
+    total += solve_row2(jolts, buttons)
+  return total
 
 
 if __name__ == "__main__":
