@@ -38,8 +38,8 @@ def all_paths_with_fft_and_dac(graph, node, seen_fft=False, seen_dac=False, memo
     return memo[key]
 
   total = 0
-  for nxt in graph.get(node, []):
-    total += all_paths_with_fft_and_dac(graph, nxt, seen_fft, seen_dac, memo)
+  for neighbor in graph.get(node, []):
+    total += all_paths_with_fft_and_dac(graph, neighbor, seen_fft, seen_dac, memo)
 
   memo[key] = total
   return total
