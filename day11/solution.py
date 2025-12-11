@@ -29,10 +29,8 @@ def all_paths_with_fft_and_dac(graph, node, seen_fft=False, seen_dac=False, memo
     memo[key] = 1 if (seen_fft and seen_dac) else 0
     return memo[key]
 
-  if node == "fft":
-    seen_fft = True
-  if node == "dac":
-    seen_dac = True
+  seen_fft |= node == "fft"
+  seen_dac |= node == "dac"
 
   if key in memo:
     return memo[key]
