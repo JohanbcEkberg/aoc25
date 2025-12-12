@@ -21,19 +21,16 @@ def read_input(path):
   
 def solve_region(shapes, region):
   shape_sizes = {}
-  shape_densities = {}
   for shape in shapes:
     size = 0
     for c in shapes[shape]:
       if c == "#":
         size += 1
     shape_sizes[shape] = size
-    shape_densities[shape] = size / len(shapes[shape].replace("\n", ""))
   
   R, C = region[0]
   region_size = R * C
   shapes_size = 0
-  print("Shape densities:", shape_densities)
   for name, count in enumerate(region[1]):
     shapes_size += (count * shape_sizes.get(str(name), 0))
 
